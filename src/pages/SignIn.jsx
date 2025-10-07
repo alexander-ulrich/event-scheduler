@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import { loginRequest } from "../utils/apiAccess";
 
@@ -6,7 +6,11 @@ export default function SignIn() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const [authResult, setAuthResult] = useState({ token: null, error: null });
+  const [authResult, setAuthResult] = useState({
+    credentials: null,
+    error: null,
+    success: false,
+  });
   const navigate = useNavigate();
 
   async function handleSubmit(e) {
@@ -16,8 +20,13 @@ export default function SignIn() {
     const pwInputEl = document.getElementById("password");
     pwInputEl.value = "";
     setPassword("");
-    // navigate(-1);
+    console.log(authResult.success);
   }
+
+  useEffect(() => {
+    if (authResult.success) navigate("/");
+  }, [authResult.success]);
+
   return (
     <div className="flex flex-col items-center">
       <form onSubmit={handleSubmit}>
@@ -55,7 +64,7 @@ export default function SignIn() {
               {authResult?.error}
             </p>
           )}
-          {authResult?.token && (
+          {authResult?.success && (
             <p className="text-green-600 mt-1 font-semibold text-center">
               Authentication complete!
             </p>
