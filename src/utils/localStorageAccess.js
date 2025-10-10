@@ -2,6 +2,11 @@ export function saveToLocalStorage(key, value) {
   localStorage.setItem(key, JSON.stringify(value));
 }
 
-export function getFromLocalStorage(key) {
-  JSON.parse(localStorage.getItem(key)) ?? [];
-}
+export const getFromLocalStorage = (key) => {
+  const item = localStorage.getItem(key);
+  return item ? JSON.parse(item) : null;
+};
+
+export const removeFromLocalStorage = (key) => {
+  localStorage.removeItem(key);
+};
