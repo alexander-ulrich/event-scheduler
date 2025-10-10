@@ -16,13 +16,26 @@ export default function SignIn() {
   async function handleSubmit(e) {
     e.preventDefault();
     const requestBody = { email: email, password: password };
+
+    
+    // setAuthResult ist asynchron, der alte Wert würde hier erhalten bleiben oder nicht?
+    // console.log(authResult.success) gibt nicht den aktuellen Login-Status aus.
     setAuthResult(await loginRequest(requestBody));
+
+  
+    // pwInputEl.value = ""; ist in React nicht nötig. Inputs am besten über State steuern.
     const pwInputEl = document.getElementById("password");
     pwInputEl.value = "";
+
+    //  State zurücksetzen
     setPassword("");
+
+    // zeigt hie noch falschen Wert
     console.log(authResult.success);
   }
 
+  // useEffect hängt vom asynchronen State ab
+  // Wenn authResult.success nicht korrekt gesetzt wird, kann der Redirect zu spät oder gar nicht erfolgen.
   useEffect(() => {
     if (authResult.success) navigate("/");
   }, [authResult.success]);
@@ -71,6 +84,8 @@ export default function SignIn() {
           )}
           <button
             type="submit"
+          
+            // onClick hier ist nicht nötig , da onSubmit bereits im Form gesetzt ist.
             onClick={handleSubmit}
             className="btn btn-neutral mt-4"
           >
