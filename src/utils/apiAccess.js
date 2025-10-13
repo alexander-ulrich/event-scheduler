@@ -1,6 +1,6 @@
- import { getFromLocalStorage, saveToLocalStorage } from "./localStorageAccess";
+import { saveToLocalStorage } from "./localStorageAccess";
 
-const baseUrl = "http://localhost:3001";
+export const baseUrl = "http://localhost:3001";
 
 export async function loginRequest(loginCredentials) {
   const authUrl = "/api/auth/login";
@@ -35,7 +35,3 @@ export async function loginRequest(loginCredentials) {
     return result;
   }
 }
-
-
-
-

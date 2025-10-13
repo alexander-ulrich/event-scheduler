@@ -8,6 +8,7 @@ import CreateEvent from "./pages/CreateEvent";
 import SignUp from "./pages/SignUp";
 import SignIn from "./pages/SignIn";
 import NotFound from "./pages/NotFound";
+import LogOut from "./pages/LogOut";
 
 function App() {
   return (
@@ -18,7 +19,7 @@ function App() {
         <Route path="events/:id" element={<EventDetails />} />
         <Route path="sign-up" element={<SignUp />} />
         <Route path="sign-in" element={<SignIn />} />
-
+        <Route path="log-out" element={<LogOut />} />
         {/* Geschützte Routen */}
         <Route element={<ProtectedLayout />}>
           <Route path="events/create-event" element={<CreateEvent />} />

@@ -1,8 +1,10 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router";
 import { loginRequest } from "../utils/apiAccess";
+import { useAuthContext } from "../contexts";
 
 export default function SignIn() {
+  const { token, setToken } = useAuthContext();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -11,31 +13,28 @@ export default function SignIn() {
     error: null,
     success: false,
   });
+  const pwRef = useRef();
   const navigate = useNavigate();
 
   async function handleSubmit(e) {
     e.preventDefault();
-    const requestBody = { email: email, password: password };
+    try {
+      const requestBody = { email: email, password: password };
 
-    
-    // setAuthResult ist asynchron, der alte Wert würde hier erhalten bleiben oder nicht?
-    // console.log(authResult.success) gibt nicht den aktuellen Login-Status aus.
-    setAuthResult(await loginRequest(requestBody));
+      const res = await loginRequest(requestBody);
+      setAuthResult(res);
+      console.log("Token from login Response:" + res.token);
 
-  
-    // pwInputEl.value = ""; ist in React nicht nötig. Inputs am besten über State steuern.
-    const pwInputEl = document.getElementById("password");
-    pwInputEl.value = "";
-
-    //  State zurücksetzen
-    setPassword("");
-
-    // zeigt hie noch falschen Wert
-    console.log(authResult.success);
+      setToken(res.token);
+    } catch (error) {
+      console.log(error.message);
+    } finally {
+      //  State zurücksetzen
+      setPassword("");
+      pwRef.current.value = "";
+    }
   }
 
-  // useEffect hängt vom asynchronen State ab
-  // Wenn authResult.success nicht korrekt gesetzt wird, kann der Redirect zu spät oder gar nicht erfolgen.
   useEffect(() => {
     if (authResult.success) navigate("/");
   }, [authResult.success]);
@@ -66,6 +65,7 @@ export default function SignIn() {
             type="password"
             id="password"
             name="password"
+            ref={pwRef}
             className="input"
             placeholder="Password"
             onChange={(e) => {
@@ -84,7 +84,6 @@ export default function SignIn() {
           )}
           <button
             type="submit"
-          
             // onClick hier ist nicht nötig , da onSubmit bereits im Form gesetzt ist.
             onClick={handleSubmit}
             className="btn btn-neutral mt-4"
