@@ -10,3 +10,11 @@ export const getFromLocalStorage = (key) => {
 export const removeFromLocalStorage = (key) => {
   localStorage.removeItem(key);
 };
+
+export function getToken() {
+  const credentials = getFromLocalStorage("credentials") || {
+    user: null,
+    token: null,
+  };
+  return credentials.token;
+}
