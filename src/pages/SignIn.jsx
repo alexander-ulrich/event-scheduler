@@ -7,7 +7,7 @@ export default function SignIn() {
   const { token, setToken } = useAuthContext();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
+  const [loading, setLoading] = useState(false);
   const [authResult, setAuthResult] = useState({
     credentials: null,
     error: null,
@@ -16,27 +16,31 @@ export default function SignIn() {
   const pwRef = useRef();
   const navigate = useNavigate();
 
+  //Authenticate User and save email, userid and token to LocalStorage
   async function handleSubmit(e) {
     e.preventDefault();
     try {
+      setLoading(true);
       const requestBody = { email: email, password: password };
-
       const res = await loginRequest(requestBody);
       setAuthResult(res);
       console.log("Token from login Response:" + res.token);
-
+      //set token from AuthContext for global authentication
       setToken(res.token);
     } catch (error) {
       console.log(error.message);
     } finally {
       //  State zurücksetzen
+      setLoading(false);
       setPassword("");
       pwRef.current.value = "";
     }
   }
-
+  //Redirect to Home on successful authentication
   useEffect(() => {
-    if (authResult.success) navigate("/");
+    if (authResult.success) {
+      navigate("/");
+    }
   }, [authResult.success]);
 
   return (
@@ -54,6 +58,7 @@ export default function SignIn() {
             name="email"
             className="input"
             placeholder="Email"
+            disabled={loading}
             onChange={(e) => {
               setEmail(e.target.value);
             }}
@@ -68,6 +73,7 @@ export default function SignIn() {
             ref={pwRef}
             className="input"
             placeholder="Password"
+            disabled={loading}
             onChange={(e) => {
               setPassword(e.target.value);
             }}
@@ -79,16 +85,15 @@ export default function SignIn() {
           )}
           {authResult?.success && (
             <p className="text-green-600 mt-1 font-semibold text-center">
-              Authentication complete!
+              Authentication complete! Redirecting...
             </p>
           )}
           <button
             type="submit"
-            // onClick hier ist nicht nötig , da onSubmit bereits im Form gesetzt ist.
-            onClick={handleSubmit}
+            disabled={loading}
             className="btn btn-neutral mt-4"
           >
-            Login
+            {loading ? "Logging in..." : "Login"}
           </button>
         </fieldset>
       </form>
