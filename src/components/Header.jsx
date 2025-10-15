@@ -1,17 +1,14 @@
 import { NavLink } from "react-router";
 import { useAuthContext } from "../contexts";
-import { useEffect } from "react";
+import { Plus } from "lucide-react";
 
 export default function Header() {
   const { token } = useAuthContext() || null;
-  console.log("Header token: " + token);
 
-  // Show "Login" and "Register" if user is not authenticated/logged in
-  // (state "token" from AuthProvider is null)
-  // otherwise show "Create Event" and Prfoile Image with dropdown menu "Logout"
   return (
     <header>
-      <nav className="navbar bg-base-100 shadow-sm justify-between">
+      <nav className="navbar bg-base-100 shadow-sm justify-between px-4">
+        {/* Mobile Dropdown */}
         <div className="dropdown min-[589px]:hidden">
           <div tabIndex={0} role="button" className="btn btn-ghost btn-circle">
             <svg
@@ -21,13 +18,12 @@ export default function Header() {
               viewBox="0 0 24 24"
               stroke="currentColor"
             >
-              {" "}
               <path
                 strokeLinecap="round"
                 strokeLinejoin="round"
                 strokeWidth="2"
                 d="M4 6h16M4 12h16M4 18h7"
-              />{" "}
+              />
             </svg>
           </div>
           <ul
@@ -49,34 +45,48 @@ export default function Header() {
             )}
             {token && (
               <li>
-                <NavLink to={"/events/create-event"}>Create Event</NavLink>
+                <NavLink
+                  to={"/events/create-event"}
+                  className="flex items-center gap-1"
+                >
+                  <Plus className="w-4 h-4" />
+                  Neues Event
+                </NavLink>
               </li>
             )}
           </ul>
         </div>
-        <div className="flex-1 max-[590px]:hidden justify-between">
+
+        {/* Desktop Navigation */}
+        {/* Desktop Navigation */}
+        <div className="hidden md:flex items-center gap-2">
           <NavLink to={"/"} className="btn btn-ghost text-xl">
             Home
           </NavLink>
-          {!token && (
-            <NavLink to={"/sign-in"} className="btn btn-ghost text-xl">
-              Login
-            </NavLink>
-          )}
-          {!token && (
-            <NavLink to={"/sign-up"} className="btn btn-ghost text-xl">
-              Register
-            </NavLink>
-          )}
+
           {token && (
             <NavLink
               to={"/events/create-event"}
-              className="btn btn-ghost text-xl"
+              className="btn btn-primary btn-sm flex items-center gap-1 px-3 py-1 text-sm"
             >
-              Create Event
+              <Plus className="w-4 h-4" />
+              Neues Event
             </NavLink>
           )}
+
+          {!token && (
+            <>
+              <NavLink to={"/sign-in"} className="btn btn-ghost text-xl">
+                Login
+              </NavLink>
+              <NavLink to={"/sign-up"} className="btn btn-ghost text-xl">
+                Register
+              </NavLink>
+            </>
+          )}
         </div>
+
+        {/* User Avatar / Dropdown */}
         <div className="flex-none">
           <div className="dropdown dropdown-end pr-3">
             {token && (
@@ -94,16 +104,6 @@ export default function Header() {
               tabIndex={0}
               className="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow"
             >
-              {/* Can maybe add Profile later if time permits */}
-              {/* <li>
-                <a className="justify-between">
-                  Profile
-                  {/* <span className="badge">New</span> */}
-              {/* </a>
-              </li>
-              <li>
-                <a>Settings</a>
-              </li> */}
               <li>
                 <NavLink to={"/log-out"}>Logout</NavLink>
               </li>
