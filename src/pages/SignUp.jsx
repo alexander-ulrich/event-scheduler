@@ -25,7 +25,11 @@ export default function SignUp() {
       setRegisterResult(res);
     } catch (error) {
       console.log(error.message);
-      setRegisterResult({ credentials: null, error: error.message, success: false });
+      setRegisterResult({
+        credentials: null,
+        error: error.message,
+        success: false,
+      });
     } finally {
       setLoading(false);
       setPassword("");
@@ -41,12 +45,16 @@ export default function SignUp() {
   }, [registerResult.success]);
 
   return (
-    <div className="flex flex-col items-center">
-      <form onSubmit={handleSubmit}>
-        <fieldset className="fieldset bg-base-200 border-base-300 rounded-box w-xs border p-4">
-          <legend className="fieldset-legend">Register</legend>
+    <div className="flex flex-col items-center min-h-[70vh] justify-center px-4">
+      <form onSubmit={handleSubmit} className="w-full max-w-xs">
+        <fieldset className="fieldset bg-base-200 border border-base-300 rounded-box p-6">
+          <legend className="fieldset-legend text-xl font-bold text-center">
+            Register
+          </legend>
 
-          <label htmlFor="email" className="label">Email</label>
+          <label htmlFor="email" className="label mt-2">
+            Email
+          </label>
           <input
             type="email"
             id="email"
@@ -56,7 +64,9 @@ export default function SignUp() {
             onChange={(e) => setEmail(e.target.value)}
           />
 
-          <label htmlFor="password" className="label">Passwort</label>
+          <label htmlFor="password" className="label mt-2">
+            Passwort
+          </label>
           <input
             type="password"
             id="password"
@@ -69,7 +79,9 @@ export default function SignUp() {
           />
 
           {registerResult.error && (
-            <p className="text-red-600 mt-1 font-semibold text-center">{registerResult.error}</p>
+            <p className="text-red-600 mt-1 font-semibold text-center">
+              {registerResult.error}
+            </p>
           )}
           {registerResult.success && (
             <p className="text-green-600 mt-1 font-semibold text-center">
@@ -77,7 +89,11 @@ export default function SignUp() {
             </p>
           )}
 
-          <button type="submit" disabled={loading} className="btn btn-neutral mt-4">
+          <button
+            type="submit"
+            disabled={loading}
+            className="btn btn-neutral mt-4"
+          >
             {loading ? "Submitting..." : "Register"}
           </button>
         </fieldset>

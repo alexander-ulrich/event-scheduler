@@ -84,7 +84,7 @@ export default function EditEvent() {
   }
 
   return (
-    <div className="max-w-2xl mx-auto mt-12 card bg-base-100 shadow-lg border border-base-200">
+    <div className="max-w-2xl mx-auto my-12 card bg-base-100 shadow-lg border border-base-200">
       <div className="card-body space-y-6">
         <div className="flex items-center justify-between">
           <h1 className="text-2xl font-bold text-primary">Event bearbeiten</h1>
@@ -150,7 +150,7 @@ export default function EditEvent() {
             </label>
             <textarea
               name="description"
-              className="textarea textarea-bordered h-32"
+              className="textarea textarea-bordered h-32 w-full"
               value={formData.description}
               onChange={(e) =>
                 setFormData({ ...formData, description: e.target.value })

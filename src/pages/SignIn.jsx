@@ -36,7 +36,11 @@ export default function SignIn() {
       }
     } catch (error) {
       console.log(error.message);
-      setAuthResult({ credentials: null, error: error.message, success: false });
+      setAuthResult({
+        credentials: null,
+        error: error.message,
+        success: false,
+      });
     } finally {
       setLoading(false);
       setPassword("");
@@ -60,7 +64,9 @@ export default function SignIn() {
     <div className="flex flex-col items-center min-h-[70vh] justify-center px-4">
       <form onSubmit={handleSubmit} className="w-full max-w-xs">
         <fieldset className="fieldset bg-base-200 border border-base-300 rounded-box p-6">
-          <legend className="fieldset-legend text-xl font-bold text-center">Login</legend>
+          <legend className="fieldset-legend text-xl font-bold text-center">
+            Login
+          </legend>
 
           {/* Email Input */}
           <label htmlFor="email" className="label mt-2">
@@ -93,7 +99,9 @@ export default function SignIn() {
 
           {/* Fehler / Erfolgsmeldungen */}
           {authResult.error && (
-            <p className="text-red-600 mt-2 font-semibold text-center">{authResult.error}</p>
+            <p className="text-red-600 mt-2 font-semibold text-center">
+              {authResult.error}
+            </p>
           )}
           {authResult.success && (
             <p className="text-green-600 mt-2 font-semibold text-center">

@@ -12,7 +12,7 @@ export default function EventCard({ event }) {
   });
 
   return (
-    <div className="card bg-base-100 shadow-md hover:shadow-lg border border-base-200 transition-all duration-300 rounded-2xl">
+    <div className="card bg-base-100 min-h-100 shadow-md hover:shadow-lg border border-base-200 transition-all duration-300 rounded-2xl">
       {/* Card Body */}
       <div className="card-body p-6 space-y-4">
         {/* Titel */}
