@@ -1,9 +1,9 @@
 import { NavLink } from "react-router";
-import { useAuthContext } from "../contexts";
+import { useAuthContext } from "../contexts/AuthContext";
 import { Plus } from "lucide-react";
 
 export default function Header() {
-  const { token } = useAuthContext() || null;
+  const { token } = useAuthContext(); // In-Memory Auth token
 
   return (
     <header>
@@ -18,12 +18,7 @@ export default function Header() {
               viewBox="0 0 24 24"
               stroke="currentColor"
             >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M4 6h16M4 12h16M4 18h7"
-              />
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h7" />
             </svg>
           </div>
           <ul
@@ -34,21 +29,18 @@ export default function Header() {
               <NavLink to={"/"}>Home</NavLink>
             </li>
             {!token && (
-              <li>
-                <NavLink to={"/sign-in"}>Login</NavLink>
-              </li>
-            )}
-            {!token && (
-              <li>
-                <NavLink to={"/sign-up"}>Register</NavLink>
-              </li>
+              <>
+                <li>
+                  <NavLink to={"/sign-in"}>Login</NavLink>
+                </li>
+                <li>
+                  <NavLink to={"/sign-up"}>Register</NavLink>
+                </li>
+              </>
             )}
             {token && (
               <li>
-                <NavLink
-                  to={"/events/create-event"}
-                  className="flex items-center gap-1"
-                >
+                <NavLink to={"/events/create-event"} className="flex items-center gap-1">
                   <Plus className="w-4 h-4" />
                   Neues Event
                 </NavLink>
@@ -58,12 +50,12 @@ export default function Header() {
         </div>
 
         {/* Desktop Navigation */}
-        {/* Desktop Navigation */}
         <div className="hidden md:flex items-center gap-2">
           <NavLink to={"/"} className="btn btn-ghost text-xl">
             Home
           </NavLink>
 
+          {/* Nur sichtbar wenn eingeloggter Benutzer */}
           {token && (
             <NavLink
               to={"/events/create-event"}
@@ -90,11 +82,7 @@ export default function Header() {
         <div className="flex-none">
           <div className="dropdown dropdown-end pr-3">
             {token && (
-              <div
-                tabIndex={0}
-                role="button"
-                className="btn btn-ghost btn-circle avatar"
-              >
+              <div tabIndex={0} role="button" className="btn btn-ghost btn-circle avatar">
                 <div className="w-10 rounded-full">
                   <img alt="Profile Picture" src="/user_avatar_default.png" />
                 </div>
@@ -104,9 +92,7 @@ export default function Header() {
               tabIndex={0}
               className="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow"
             >
-              <li>
-                <NavLink to={"/log-out"}>Logout</NavLink>
-              </li>
+              {token && <li><NavLink to={"/log-out"}>Logout</NavLink></li>}
             </ul>
           </div>
         </div>
