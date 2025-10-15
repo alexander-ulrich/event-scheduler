@@ -1,12 +1,12 @@
 @import "tailwindcss";
-@plugin "daisyui";
-
+@plugin "daisyui" {
+  themes: all;
+}
 
 body {
   @apply bg-cover bg-center bg-no-repeat;
-  background-image: url('/images/stage-bg-events.jpg');
+  background-image: url("/images/stage-bg-events.jpg");
 }
-
 
 // Effekte für Slides/Fades
 
@@ -24,7 +24,6 @@ body {
 .animate-slide-in-left {
   animation: slide-in-left 0.8s ease-out forwards;
 }
-
 
 @keyframes fade-in {
   0% {

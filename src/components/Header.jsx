@@ -9,7 +9,7 @@ export default function Header() {
     <header>
       <nav className="navbar bg-base-100 shadow-sm justify-between px-4">
         {/* Mobile Dropdown */}
-        <div className="dropdown min-[589px]:hidden">
+        <div className="dropdown min-[590px]:hidden">
           <div tabIndex={0} role="button" className="btn btn-ghost btn-circle">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -59,7 +59,7 @@ export default function Header() {
 
         {/* Desktop Navigation */}
         {/* Desktop Navigation */}
-        <div className="hidden md:flex items-center gap-2">
+        <div className="max-[590px]:hidden flex items-center gap-2">
           <NavLink to={"/"} className="btn btn-ghost text-xl">
             Home
           </NavLink>
