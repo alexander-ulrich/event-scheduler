@@ -1,9 +1,9 @@
 import { NavLink } from "react-router";
-import { useAuthContext } from "../contexts";
+import { useAuthContext } from "../contexts/AuthContext";
 import { Plus } from "lucide-react";
 
 export default function Header() {
-  const { token } = useAuthContext() || null;
+  const { token } = useAuthContext(); // In-Memory Auth token
 
   return (
     <header>
@@ -34,14 +34,14 @@ export default function Header() {
               <NavLink to={"/"}>Home</NavLink>
             </li>
             {!token && (
-              <li>
-                <NavLink to={"/sign-in"}>Login</NavLink>
-              </li>
-            )}
-            {!token && (
-              <li>
-                <NavLink to={"/sign-up"}>Register</NavLink>
-              </li>
+              <>
+                <li>
+                  <NavLink to={"/sign-in"}>Login</NavLink>
+                </li>
+                <li>
+                  <NavLink to={"/sign-up"}>Register</NavLink>
+                </li>
+              </>
             )}
             {token && (
               <li>
@@ -58,12 +58,12 @@ export default function Header() {
         </div>
 
         {/* Desktop Navigation */}
-        {/* Desktop Navigation */}
         <div className="max-[590px]:hidden flex items-center gap-2">
           <NavLink to={"/"} className="btn btn-ghost text-xl">
             Home
           </NavLink>
 
+          {/* Nur sichtbar wenn eingeloggter Benutzer */}
           {token && (
             <NavLink
               to={"/events/create-event"}
@@ -104,9 +104,11 @@ export default function Header() {
               tabIndex={0}
               className="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow"
             >
-              <li>
-                <NavLink to={"/log-out"}>Logout</NavLink>
-              </li>
+              {token && (
+                <li>
+                  <NavLink to={"/log-out"}>Logout</NavLink>
+                </li>
+              )}
             </ul>
           </div>
         </div>

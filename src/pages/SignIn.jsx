@@ -1,10 +1,11 @@
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router";
 import { loginRequest } from "../utils/apiAccess";
-import { useAuthContext } from "../contexts";
+import { useAuthContext } from "../contexts/AuthContext";
 
 export default function SignIn() {
-  const { token, setToken } = useAuthContext();
+  // Nur setToken wird benötigt, da wir In-Memory Token speichern
+  const { setToken } = useAuthContext();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
@@ -13,85 +14,106 @@ export default function SignIn() {
     error: null,
     success: false,
   });
-  const pwRef = useRef();
+
+  const pwRef = useRef(); // Passwortfeld zurücksetzen
   const navigate = useNavigate();
 
-  //Authenticate User and save email, userid and token to LocalStorage
+  // ========================
+  // Login Handler
+  // ========================
   async function handleSubmit(e) {
     e.preventDefault();
+    setLoading(true);
+
     try {
-      setLoading(true);
-      const requestBody = { email: email, password: password };
-      const res = await loginRequest(requestBody);
+      const requestBody = { email, password };
+      const res = await loginRequest(requestBody); // API Call aus apiAccess.js
       setAuthResult(res);
-      console.log("Token from login Response:" + res.token);
-      //set token from AuthContext for global authentication
-      setToken(res.token);
+
+      if (res.success) {
+        // Token wird nur In-Memory gesetzt
+        setToken(res.credentials?.token || null);
+      }
     } catch (error) {
       console.log(error.message);
+      setAuthResult({
+        credentials: null,
+        error: error.message,
+        success: false,
+      });
     } finally {
-      //  State zurücksetzen
       setLoading(false);
       setPassword("");
-      pwRef.current.value = "";
+      if (pwRef.current) pwRef.current.value = "";
     }
   }
-  //Redirect to Home on successful authentication
+
+  // ========================
+  // Redirect nach erfolgreichem Login
+  // ========================
   useEffect(() => {
     if (authResult.success) {
-      navigate("/");
+      navigate("/"); // zurück zur Startseite
     }
   }, [authResult.success]);
 
+  // ========================
+  // JSX
+  // ========================
   return (
-    <div className="flex flex-col items-center my-50">
-      <form onSubmit={handleSubmit}>
-        <fieldset className="fieldset bg-base-200 border-base-300 rounded-box w-xs border p-4">
-          <legend className="fieldset-legend">Login</legend>
+    <div className="flex flex-col items-center min-h-[70vh] justify-center px-4">
+      <form onSubmit={handleSubmit} className="w-full max-w-xs">
+        <fieldset className="fieldset bg-base-200 border border-base-300 rounded-box p-6">
+          <legend className="fieldset-legend text-xl font-bold text-center">
+            Login
+          </legend>
 
-          <label htmlFor="email" className="label">
+          {/* Email Input */}
+          <label htmlFor="email" className="label mt-2">
             Email
           </label>
           <input
             type="email"
             id="email"
-            name="email"
-            className="input"
+            className="input input-bordered w-full"
             placeholder="Email"
             disabled={loading}
-            onChange={(e) => {
-              setEmail(e.target.value);
-            }}
+            onChange={(e) => setEmail(e.target.value)}
+            required
           />
-          <label htmlFor="password" className="label">
-            Password
+
+          {/* Passwort Input */}
+          <label htmlFor="password" className="label mt-2">
+            Passwort
           </label>
           <input
             type="password"
             id="password"
-            name="password"
             ref={pwRef}
-            className="input"
+            className="input input-bordered w-full"
             placeholder="Password"
             disabled={loading}
-            onChange={(e) => {
-              setPassword(e.target.value);
-            }}
+            onChange={(e) => setPassword(e.target.value)}
+            required
           />
-          {authResult?.error && (
-            <p className="text-red-600 mt-1 font-semibold text-center">
-              {authResult?.error}
+
+          {/* Fehler / Erfolgsmeldungen */}
+          {authResult.error && (
+            <p className="text-red-600 mt-2 font-semibold text-center">
+              {authResult.error}
             </p>
           )}
-          {authResult?.success && (
-            <p className="text-green-600 mt-1 font-semibold text-center">
-              Authentication complete! Redirecting...
+          {authResult.success && (
+            <p className="text-green-600 mt-2 font-semibold text-center">
+              Authentifizierung erfolgreich!
             </p>
           )}
+
+          {/* Submit Button */}
           <button
             type="submit"
             disabled={loading}
-            className="btn btn-neutral mt-4"
+            className="btn btn-primary w-full mt-4"
           >
             {loading ? "Logging in..." : "Login"}
           </button>

@@ -1,13 +1,5 @@
-import { createContext, use } from "react";
-
-export const AuthContext = createContext();
-
-export function useAuthContext() {
-  const context = use(AuthContext);
-  if (!context) {
-    throw new Error("useAuthContext must be used from withiin AuthProvider");
-  }
-  return context;
-}
+// src/contexts/index.js
 
 export { default as AuthProvider } from "./AuthProvider";
+export { useAuthContext } from "./useAuthContext";
+export { AuthContext } from "./AuthContext";

@@ -11,30 +11,33 @@ export default function SignUp() {
     error: null,
     success: false,
   });
+
   const pwRef = useRef();
   const navigate = useNavigate();
 
-  //add new User to API database
+  // Registrierung
   async function handleSubmit(e) {
     e.preventDefault();
+    setLoading(true);
     try {
-      setLoading(true);
-      const requestBody = { email: email, password: password };
+      const requestBody = { email, password };
       const res = await registerRequest(requestBody);
       setRegisterResult(res);
     } catch (error) {
       console.log(error.message);
-      setRegisterResult(res);
+      setRegisterResult({ credentials: null, error: error.message, success: false });
     } finally {
-      //  State zurücksetzen
       setLoading(false);
       setPassword("");
-      pwRef.current.value = "";
+      if (pwRef.current) pwRef.current.value = "";
     }
   }
-  //Redirect to login page on successful registrtion for authentication
+
+  // Redirect zu Login nach erfolgreicher Registrierung
   useEffect(() => {
-    if (registerResult.success) navigate("/sign-in");
+    if (registerResult.success) {
+      navigate("/sign-in");
+    }
   }, [registerResult.success]);
 
   return (
@@ -43,51 +46,38 @@ export default function SignUp() {
         <fieldset className="fieldset bg-base-200 border-base-300 rounded-box w-xs border p-4">
           <legend className="fieldset-legend">Register</legend>
 
-          <label htmlFor="email" className="label">
-            Email
-          </label>
+          <label htmlFor="email" className="label">Email</label>
           <input
             type="email"
             id="email"
-            name="email"
             className="input"
             placeholder="Email"
             disabled={loading}
-            onChange={(e) => {
-              setEmail(e.target.value);
-            }}
+            onChange={(e) => setEmail(e.target.value)}
           />
-          <label htmlFor="password" className="label">
-            Password
-          </label>
+
+          <label htmlFor="password" className="label">Passwort</label>
           <input
             type="password"
             id="password"
-            name="password"
             ref={pwRef}
             className="input"
             placeholder="Password"
             disabled={loading}
             autoComplete="new-password"
-            onChange={(e) => {
-              setPassword(e.target.value);
-            }}
+            onChange={(e) => setPassword(e.target.value)}
           />
-          {registerResult?.error && (
-            <p className="text-red-600 mt-1 font-semibold text-center">
-              {registerResult?.error}
-            </p>
+
+          {registerResult.error && (
+            <p className="text-red-600 mt-1 font-semibold text-center">{registerResult.error}</p>
           )}
-          {registerResult?.success && (
+          {registerResult.success && (
             <p className="text-green-600 mt-1 font-semibold text-center">
-              Registration complete! Redirecting...
+              Registrierung erfolgreich! Du kannst dich jetzt einloggen.
             </p>
           )}
-          <button
-            type="submit"
-            disabled={loading}
-            className="btn btn-neutral mt-4"
-          >
+
+          <button type="submit" disabled={loading} className="btn btn-neutral mt-4">
             {loading ? "Submitting..." : "Register"}
           </button>
         </fieldset>

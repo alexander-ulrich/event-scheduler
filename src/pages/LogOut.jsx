@@ -6,7 +6,7 @@ import {
 import { useEffect } from "react";
 import { useAuthContext } from "../contexts";
 
-//Logout: set AuthProvider token (state) to null and remove credentials from LocalStorage
+//Logout: setzt Token im Context und in localStorage auf null, navigiert zur Startseite
 export default function LogOut() {
   const navigate = useNavigate();
   const { setToken } = useAuthContext();
@@ -17,7 +17,7 @@ export default function LogOut() {
     }
     setToken(null);
   }
-  //Redirect to Home after Logout
+  //Redirect 
   useEffect(() => {
     logOutRequest();
     navigate("/");
