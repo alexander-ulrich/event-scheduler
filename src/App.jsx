@@ -1,4 +1,4 @@
-import { Route, Routes } from "react-router";
+import { Routes, Route } from "react-router-dom"; // "react-router-dom" nutzen!
 import MainLayout from "./layouts/MainLayout";
 import ProtectedLayout from "./layouts/ProtectedLayout";
 
