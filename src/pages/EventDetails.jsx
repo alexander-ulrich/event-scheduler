@@ -90,7 +90,7 @@ export default function EventDetails() {
   });
 
   return (
-    <div className="max-w-3xl mx-auto my-50 card bg-base-100 shadow-lg border border-base-200">
+    <div className="max-w-3xl mx-auto max-[800px]:mx-4 my-50 card bg-base-100 shadow-lg border border-base-200 justify-center">
       <div className="card-body space-y-6">
         {/* Titel */}
         <h1 className="text-3xl font-bold text-primary">{event.title}</h1>
