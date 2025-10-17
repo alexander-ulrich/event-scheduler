@@ -21,13 +21,12 @@ function App() {
         <Route path="sign-up" element={<SignUp />} />
         <Route path="sign-in" element={<SignIn />} />
         <Route path="log-out" element={<LogOut />} />
-
         {/* Geschützte Routen */}
         <Route element={<ProtectedLayout />}>
           <Route path="events/create-event" element={<CreateEvent />} />
           <Route path="events/:id/edit" element={<EditEvent />} />
+          <Route path="*" element={<NotFound />} />
         </Route>
-
         {/* Fallback */}
         <Route path="*" element={<NotFound />} />
       </Route>
