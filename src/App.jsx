@@ -25,7 +25,6 @@ function App() {
         <Route element={<ProtectedLayout />}>
           <Route path="events/create-event" element={<CreateEvent />} />
           <Route path="events/:id/edit" element={<EditEvent />} />
-          <Route path="*" element={<NotFound />} />
         </Route>
         {/* Fallback */}
         <Route path="*" element={<NotFound />} />
