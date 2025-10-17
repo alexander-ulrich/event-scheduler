@@ -17,7 +17,11 @@ export default function CreateEvent() {
   });
 
   const [loading, setLoading] = useState(false);
-  const [result, setResult] = useState({ event: null, error: null, success: false });
+  const [result, setResult] = useState({
+    event: null,
+    error: null,
+    success: false,
+  });
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -27,7 +31,11 @@ export default function CreateEvent() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!token) {
-      setResult({ event: null, error: "Du musst eingeloggt sein, um ein Event zu erstellen", success: false });
+      setResult({
+        event: null,
+        error: "Du musst eingeloggt sein, um ein Event zu erstellen",
+        success: false,
+      });
       return;
     }
 
@@ -43,7 +51,11 @@ export default function CreateEvent() {
         setTimeout(() => navigate("/"), 2000);
       }
     } catch (err) {
-      setResult({ event: null, error: "Ein Fehler ist aufgetreten. Bitte erneut versuchen.", success: false });
+      setResult({
+        event: null,
+        error: "Ein Fehler ist aufgetreten. Bitte erneut versuchen.",
+        success: false,
+      });
     } finally {
       setLoading(false);
     }
@@ -51,20 +63,19 @@ export default function CreateEvent() {
 
   return (
     <div className="container mx-auto px-4 py-8 max-w-2xl">
-      <div className="flex items-center mb-8 gap-4">
-        <button
-          onClick={() => navigate("/")}
-          className="btn btn-ghost btn-sm flex items-center gap-1"
-        >
-          <ArrowLeft className="w-4 h-4" /> Zurück
-        </button>
-        <h1 className="text-3xl font-bold flex items-center gap-2">
-          Neues Event <Plus className="w-5 h-5 text-primary" />
-        </h1>
-      </div>
-
       <form ref={formRef} onSubmit={handleSubmit} className="space-y-6">
         <div className="card bg-base-100 shadow-md border border-base-300">
+          <div className="flex items-center mt-8 gap-4">
+            <button
+              onClick={() => navigate("/")}
+              className="btn btn-ghost btn-sm flex items-center gap-1"
+            >
+              <ArrowLeft className="w-4 h-4" /> Zurück
+            </button>
+            <h1 className="text-3xl font-bold flex items-center gap-2">
+              Neues Event <Plus className="w-5 h-5 text-primary" />
+            </h1>
+          </div>
           <div className="card-body space-y-4">
             <div className="form-control">
               <label htmlFor="title" className="label">
@@ -102,7 +113,9 @@ export default function CreateEvent() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="form-control">
                 <label htmlFor="date" className="label">
-                  <span className="label-text font-semibold">Datum & Uhrzeit *</span>
+                  <span className="label-text font-semibold">
+                    Datum & Uhrzeit *
+                  </span>
                 </label>
                 <input
                   type="datetime-local"
@@ -156,7 +169,11 @@ export default function CreateEvent() {
           >
             Abbrechen
           </button>
-          <button type="submit" className="btn btn-primary flex items-center gap-2" disabled={loading}>
+          <button
+            type="submit"
+            className="btn btn-primary flex items-center gap-2"
+            disabled={loading}
+          >
             {loading ? (
               <>
                 <span className="loading loading-spinner loading-sm"></span>
